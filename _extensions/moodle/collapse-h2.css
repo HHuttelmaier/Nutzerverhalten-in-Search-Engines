@@ -1,0 +1,33 @@
+/* 1. Container Styles */
+details.native-collapse {
+  margin-bottom: 1rem;
+  display: block;
+}
+
+/* 2. The Clickable Trigger (H2 Only) */
+summary.native-summary {
+  list-style: none; /* Hide default browser triangle */
+  cursor: pointer;
+  position: relative;
+  padding-right: 2rem;
+  outline: none;
+  user-select: none;
+}
+/* Hide default triangle for Safari/Chrome */
+summary.native-summary::-webkit-details-marker {
+  display: none;
+}
+
+/* 3. Make H2 inline so it fits in the summary line */
+h2.summary-header {
+  display: inline-block;
+  margin: 0;
+  width: 100%;
+}
+
+/* 5. Content Indentation */
+/* This indents H3/H4 and text slightly so they look "inside" the H2 */
+details.native-collapse .native-content {
+  margin-left: 0rem;
+  margin-top: 1rem;
+}

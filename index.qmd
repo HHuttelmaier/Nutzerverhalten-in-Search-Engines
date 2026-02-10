@@ -1,0 +1,8 @@
+# Einführung
+
+In diesem Kursteil befassen wir uns damit, wie User sich in Search Engines bewegen und welche Auswirkungen dies für uns als Unternehmen hat.
+Ihr könnt euch im Kurs frei bewegen (in der Mitte starten, Kapitel auslassen, ...). Aufgrund der nicht ganz einfachen Inhalte und Vielzahl an Themen: Pickt euch raus, was euch interessiert. Viel Spaß!
+
+<a href="media/2026_SEO_Userverhalten.pdf" class="btn btn-primary" download>
+  <i class="bi bi-download"></i> Download Slides
+</a>

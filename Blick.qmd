@@ -1,0 +1,39 @@
+# EINFLUSSFAKTOREN AUF DAS BLICKVERHALTEN
+
+## Einflussfaktoren auf das Blickverhalten - Einführung
+
+{{< video https://youtu.be/3y1k3HCbChk >}}
+
+## Wie beeinflusst die Position von Suchergebnissen das Blickverhalten?
+
+{{< video https://youtu.be/7ARlccXvsso >}}
+
+## Wie beeinflussen Snippet-Komponenten das Blickverhalten?
+
+{{< video https://youtu.be/tXEvkqHQJIM >}}
+
+## Wie beeinflusst das Vorhandensein von gesponserten Ergebnissen das Blickverhalten?
+
+{{< video https://youtu.be/cc9EyklYYmc >}}
+
+## Wie beeinflussen Vertical Search Results das Blickverhalten?
+
+{{< video https://youtu.be/SrLOMi5gcQ4 >}}
+
+## Welche Auswirkung hat das Device/die Bildschirmgröße auf das Blickverhalten?
+
+{{< video https://youtu.be/E9Zas1WA5DE >}}
+
+## Wie nutzen User SERPs auf mobilen Endgeräten? Fokus Aufmerksamkeitsverteilung.
+
+{{< video https://youtu.be/mJHd4PfP8jQ >}}
+
+{{< video https://youtu.be/L3b3xsZmQRA >}}
+
+## Wie beeinflussen unterschiedliche Aufgabentypen das Blickverhalten?
+
+{{< video https://youtu.be/zgWuwZTJao0 >}}
+
+## Wie beeinflussen individuelle Charakteristika das Blickverhalten?
+
+{{< video https://youtu.be/uVhjaqr-pCk >}}

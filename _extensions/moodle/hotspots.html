@@ -1,0 +1,117 @@
+<div class="interactive-hotspots-wrapper" style="margin: 2rem 0;">
+  <style>
+    .interactive-hotspots-wrapper { max-width: 1200px; margin: 2rem auto; }
+    .hotspot-container-{{RANDOM_ID}} { position: relative; width: 100%; display: inline-block; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: visible; background: white; }
+    .hotspot-container-{{RANDOM_ID}} img { width: 100%; height: auto; display: block; border-radius: 8px; }
+    .hotspot-{{RANDOM_ID}} { position: absolute; width: 48px; height: 48px; cursor: pointer; transform: translate(-50%, -50%); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 10; }
+    .hotspot-inner-{{RANDOM_ID}} { width: 100%; height: 100%; border-radius: 50%; background: white; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); display: flex; align-items: center; justify-content: center; position: relative; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); animation: pulse-{{RANDOM_ID}} 2s ease-in-out infinite; }
+    .hotspot-inner-{{RANDOM_ID}}::before { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 2px solid #ff6b35; opacity: 0; transform: scale(1.2); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .hotspot-{{RANDOM_ID}}:hover .hotspot-inner-{{RANDOM_ID}} { transform: scale(1.15); box-shadow: 0 6px 20px rgba(255, 107, 53, 0.3); }
+    .hotspot-{{RANDOM_ID}}:hover .hotspot-inner-{{RANDOM_ID}}::before { opacity: 1; transform: scale(1.4); }
+    .hotspot-{{RANDOM_ID}}.active .hotspot-inner-{{RANDOM_ID}} { background: #ff6b35; }
+    .hotspot-{{RANDOM_ID}}.active .hotspot-inner-{{RANDOM_ID}}::after { color: white; }
+    .hotspot-inner-{{RANDOM_ID}}::after { content: '+'; font-size: 24px; font-weight: 600; color: #ff6b35; transition: color 0.3s ease; }
+    .hotspot-popup-{{RANDOM_ID}} { position: absolute; background: white; border-radius: 12px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2); padding: 32px; min-width: 400px; max-width: 500px; z-index: 100; border-top: 4px solid #ff6b35; display: none; }
+    .hotspot-popup-{{RANDOM_ID}}.visible { display: block; }
+    .hotspot-popup-{{RANDOM_ID}}.active { animation: popupFadeIn-{{RANDOM_ID}} 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+    @keyframes popupFadeIn-{{RANDOM_ID}} { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes pulse-{{RANDOM_ID}} { 0%, 100% { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); } 50% { box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4); } }
+    .popup-header-{{RANDOM_ID}} { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .popup-title-{{RANDOM_ID}} { font-size: 24px; font-weight: 700; color: #1a1a1a; }
+    .popup-nav-{{RANDOM_ID}} { display: flex; gap: 8px; }
+    .nav-btn-{{RANDOM_ID}} { width: 32px; height: 32px; border: 1px solid #e0e0e0; background: white; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; font-size: 18px; color: #666; }
+    .nav-btn-{{RANDOM_ID}}:hover { background: #f8f8f8; border-color: #ff6b35; color: #ff6b35; }
+    .nav-btn-{{RANDOM_ID}}:disabled { opacity: 0.3; cursor: not-allowed; }
+    .popup-content-{{RANDOM_ID}} { font-size: 16px; line-height: 1.7; color: #4a4a4a; }
+    .close-btn-{{RANDOM_ID}} { position: absolute; top: 16px; right: 16px; width: 28px; height: 28px; border: none; background: transparent; cursor: pointer; font-size: 24px; color: #999; transition: color 0.2s ease; }
+    .close-btn-{{RANDOM_ID}}:hover { color: #ff6b35; }
+  </style>
+  
+  <div class="hotspot-container-{{RANDOM_ID}}">
+    <img src="{{IMAGE_PATH}}" alt="Interactive Image">
+    
+    <div class="hotspot-{{RANDOM_ID}}" data-id="0" style="top: 13%; left: 50%;">
+      <div class="hotspot-inner-{{RANDOM_ID}}"></div>
+    </div>
+    <div class="hotspot-{{RANDOM_ID}}" data-id="1" style="top: 43%; left: 50%;">
+      <div class="hotspot-inner-{{RANDOM_ID}}"></div>
+    </div>
+    <div class="hotspot-{{RANDOM_ID}}" data-id="2" style="top: 73%; left: 50%;">
+      <div class="hotspot-inner-{{RANDOM_ID}}"></div>
+    </div>
+    
+    <div class="hotspot-popup-{{RANDOM_ID}}">
+      <button class="close-btn-{{RANDOM_ID}}">×</button>
+      <div class="popup-header-{{RANDOM_ID}}">
+        <h3 class="popup-title-{{RANDOM_ID}}"></h3>
+        <div class="popup-nav-{{RANDOM_ID}}">
+          <button class="nav-btn-{{RANDOM_ID}} prev-btn-{{RANDOM_ID}}">‹</button>
+          <button class="nav-btn-{{RANDOM_ID}} next-btn-{{RANDOM_ID}}">›</button>
+        </div>
+      </div>
+      <div class="popup-content-{{RANDOM_ID}}"></div>
+    </div>
+  </div>
+  
+  <script>
+    (function() {
+      const data = [
+        { title: "{{TITLE_1}}", content: "{{CONTENT_1}}" },
+        { title: "{{TITLE_2}}", content: "{{CONTENT_2}}" },
+        { title: "{{TITLE_3}}", content: "{{CONTENT_3}}" }
+      ];
+      
+      const container = document.querySelector('.hotspot-container-{{RANDOM_ID}}');
+      const popup = document.querySelector('.hotspot-popup-{{RANDOM_ID}}');
+      const hotspots = container.querySelectorAll('.hotspot-{{RANDOM_ID}}');
+      const title = popup.querySelector('.popup-title-{{RANDOM_ID}}');
+      const content = popup.querySelector('.popup-content-{{RANDOM_ID}}');
+      const closeBtn = popup.querySelector('.close-btn-{{RANDOM_ID}}');
+      const prevBtn = popup.querySelector('.prev-btn-{{RANDOM_ID}}');
+      const nextBtn = popup.querySelector('.next-btn-{{RANDOM_ID}}');
+      
+      let current = -1;
+      
+      function position(hotspot) {
+        const hRect = hotspot.getBoundingClientRect();
+        const cRect = container.getBoundingClientRect();
+        const pRect = popup.getBoundingClientRect();
+        const x = hRect.left - cRect.left + hRect.width / 2;
+        const y = hRect.top - cRect.top;
+        let left = x - pRect.width / 2;
+        let top = y - pRect.height - 20;
+        if (left < 20) left = 20;
+        if (left + pRect.width > cRect.width - 20) left = cRect.width - pRect.width - 20;
+        if (top < 20) top = y + hRect.height + 20;
+        popup.style.left = left + 'px';
+        popup.style.top = top + 'px';
+      }
+      
+      function show(i) {
+        current = i;
+        title.textContent = data[i].title;
+        content.innerHTML = data[i].content;
+        hotspots.forEach((h, idx) => h.classList.toggle('active', idx === i));
+        prevBtn.disabled = i === 0;
+        nextBtn.disabled = i === data.length - 1;
+        popup.classList.add('visible');
+        popup.classList.remove('active');
+        setTimeout(() => { position(hotspots[i]); setTimeout(() => popup.classList.add('active'), 10); }, 0);
+      }
+      
+      function hide() {
+        popup.classList.remove('active');
+        setTimeout(() => popup.classList.remove('visible'), 300);
+        hotspots.forEach(h => h.classList.remove('active'));
+        current = -1;
+      }
+      
+      hotspots.forEach((h, i) => h.addEventListener('click', e => { e.stopPropagation(); current === i ? hide() : show(i); }));
+      closeBtn.addEventListener('click', e => { e.stopPropagation(); hide(); });
+      prevBtn.addEventListener('click', e => { e.stopPropagation(); if (current > 0) show(current - 1); });
+      nextBtn.addEventListener('click', e => { e.stopPropagation(); if (current < data.length - 1) show(current + 1); });
+      document.addEventListener('click', e => { if (!popup.contains(e.target) && !e.target.closest('.hotspot-{{RANDOM_ID}}')) hide(); });
+      window.addEventListener('resize', () => { if (current >= 0) position(hotspots[current]); });
+    })();
+  </script>
+</div>

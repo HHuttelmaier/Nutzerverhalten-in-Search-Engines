@@ -1,0 +1,471 @@
+<div class="content-slider-wrapper-{{RANDOM_ID}}" style="max-width: 1200px; margin: 2rem auto;">
+  <style>
+    .content-slider-wrapper-{{RANDOM_ID}} {
+      position: relative;
+    }
+
+    .slider-container-{{RANDOM_ID}} {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      min-height: 600px;
+
+      /* NEW: keep a stable “viewport-like” height so slides can scroll inside */
+      height: clamp(520px, 75vh, 760px);
+
+      position: relative;
+    }
+
+    /* NEW: give the wrapper an actual height for the absolute slides */
+    .slider-wrapper-{{RANDOM_ID}} {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .slide-{{RANDOM_ID}} {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+
+      /* CHANGED: bottom padding so dots don’t overlap; also scroll support */
+      padding: 60px 80px 130px;
+      box-sizing: border-box;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      /* CHANGED: start at top so big media doesn’t clip title */
+      justify-content: flex-start;
+
+      gap: 24px;
+
+      /* NEW: if content is larger than the slide, scroll inside the slide */
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .slide-{{RANDOM_ID}}.active {
+      opacity: 1;
+      visibility: visible;
+      z-index: 10;
+    }
+
+    .slide-{{RANDOM_ID}}.exit-left {
+      animation: slideOutLeft-{{RANDOM_ID}} 0.5s ease forwards;
+    }
+
+    .slide-{{RANDOM_ID}}.exit-right {
+      animation: slideOutRight-{{RANDOM_ID}} 0.5s ease forwards;
+    }
+
+    .slide-{{RANDOM_ID}}.enter-left {
+      animation: slideInLeft-{{RANDOM_ID}} 0.5s ease forwards;
+    }
+
+    .slide-{{RANDOM_ID}}.enter-right {
+      animation: slideInRight-{{RANDOM_ID}} 0.5s ease forwards;
+    }
+
+    @keyframes slideOutLeft-{{RANDOM_ID}} {
+      from { opacity: 1; transform: translateX(0); }
+      to { opacity: 0; transform: translateX(-50px); }
+    }
+
+    @keyframes slideOutRight-{{RANDOM_ID}} {
+      from { opacity: 1; transform: translateX(0); }
+      to { opacity: 0; transform: translateX(50px); }
+    }
+
+    @keyframes slideInLeft-{{RANDOM_ID}} {
+      from { opacity: 0; transform: translateX(-50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes slideInRight-{{RANDOM_ID}} {
+      from { opacity: 0; transform: translateX(50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .slide-heading-{{RANDOM_ID}} {
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      text-align: center;
+
+      /* NEW: sticky heading so it stays visible while scrolling */
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(6px);
+      padding: 10px 14px;
+      /* border-radius: 14px; */
+
+      margin: 0 0 10px 0;
+    }
+
+    .slide-image-{{RANDOM_ID}} {
+      max-width: 500px;
+      width: 100%;
+      height: auto;
+
+      /* NEW: prevent very tall images from taking over */
+      max-height: 45vh;
+      object-fit: contain;
+
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      display: block;
+    }
+
+    .slide-video-{{RANDOM_ID}} {
+      max-width: 800px;
+      width: 100%;
+      height: auto;
+
+      /* NEW: prevent huge videos from hiding text */
+      max-height: 45vh;
+      object-fit: contain;
+
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      display: block;
+    }
+
+    .slide-audio-{{RANDOM_ID}} {
+      width: 100%;
+      max-width: 800px;
+      margin: 20px 0;
+    }
+
+    .slide-audio-{{RANDOM_ID}} audio {
+      width: 100%;
+      border-radius: 50px;
+      outline: none;
+    }
+
+    .slide-text-{{RANDOM_ID}} {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #4a4a4a;
+      text-align: center;
+      max-width: 800px;
+      margin: 0;
+    }
+
+    .slide-button-{{RANDOM_ID}} {
+      padding: 16px 48px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: white;
+      background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 10px;
+    }
+
+    .slide-button-{{RANDOM_ID}}:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(255, 107, 53, 0.4);
+    }
+
+    .nav-arrow-{{RANDOM_ID}} {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 60px;
+      height: 60px;
+      background: #1a1a1a;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-arrow-{{RANDOM_ID}}:hover {
+      background: #333;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .nav-arrow-{{RANDOM_ID}}.disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .nav-arrow-{{RANDOM_ID}}.disabled:hover {
+      transform: translateY(-50%) scale(1);
+      background: #1a1a1a;
+    }
+
+    .nav-arrow-left-{{RANDOM_ID}} { left: 20px; }
+    .nav-arrow-right-{{RANDOM_ID}} { right: 20px; }
+
+    .nav-arrow-{{RANDOM_ID}} svg {
+      width: 24px;
+      height: 24px;
+      fill: white;
+    }
+
+    .progress-dots-{{RANDOM_ID}} {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 12px;
+      z-index: 100;
+    }
+
+    .dot-{{RANDOM_ID}} {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #ddd;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .dot-{{RANDOM_ID}}.active {
+      background: #ff6b35;
+      transform: scale(1.3);
+    }
+
+    .dot-{{RANDOM_ID}}:hover {
+      background: #ff8c42;
+    }
+
+    @media (max-width: 768px) {
+      .slide-{{RANDOM_ID}} {
+        padding: 40px 20px 120px;
+        gap: 18px;
+      }
+
+      .slide-heading-{{RANDOM_ID}} {
+        font-size: 1.8rem;
+      }
+
+      .slide-text-{{RANDOM_ID}} {
+        font-size: 1rem;
+      }
+
+      .nav-arrow-{{RANDOM_ID}} {
+        width: 50px;
+        height: 50px;
+      }
+
+      /* Slightly reduce max-heights on small screens */
+      .slide-image-{{RANDOM_ID}},
+      .slide-video-{{RANDOM_ID}} {
+        max-height: 38vh;
+      }
+    }
+  </style>
+
+  <div class="slider-container-{{RANDOM_ID}}">
+    <div class="slider-wrapper-{{RANDOM_ID}}"></div>
+
+    <button class="nav-arrow-{{RANDOM_ID}} nav-arrow-left-{{RANDOM_ID}}">
+      <svg viewBox="0 0 24 24">
+        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+      </svg>
+    </button>
+
+    <button class="nav-arrow-{{RANDOM_ID}} nav-arrow-right-{{RANDOM_ID}}">
+      <svg viewBox="0 0 24 24">
+        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+      </svg>
+    </button>
+
+    <div class="progress-dots-{{RANDOM_ID}}"></div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const slidesData = {{SLIDES_DATA}};
+  const id = '{{RANDOM_ID}}';
+
+  class ContentSlider {
+    constructor(slides, containerId) {
+      this.slides = slides;
+      this.currentIndex = 0;
+      this.id = containerId;
+      this.wrapper = document.querySelector(`.slider-wrapper-${this.id}`);
+      this.prevBtn = document.querySelector(`.nav-arrow-left-${this.id}`);
+      this.nextBtn = document.querySelector(`.nav-arrow-right-${this.id}`);
+      this.dotsContainer = document.querySelector(`.progress-dots-${this.id}`);
+
+      this.init();
+    }
+
+    init() {
+      this.renderSlides();
+      this.renderDots();
+      this.attachEventListeners();
+      this.updateNavigation();
+    }
+
+    renderSlides() {
+      this.wrapper.innerHTML = '';
+
+      this.slides.forEach((slideData, index) => {
+        const slide = document.createElement('div');
+        slide.className = `slide-${this.id}`;
+        if (index === 0) slide.classList.add('active');
+
+        if (slideData.heading) {
+          const heading = document.createElement('h2');
+          heading.className = `slide-heading-${this.id}`;
+          heading.textContent = slideData.heading;
+          slide.appendChild(heading);
+        }
+
+        if (slideData.media_type === 'image' && slideData.media_src) {
+          const img = document.createElement('img');
+          img.className = `slide-image-${this.id}`;
+          img.src = slideData.media_src;
+          img.alt = slideData.heading || 'Slide image';
+          slide.appendChild(img);
+        }
+
+        if (slideData.media_type === 'video' && slideData.media_src) {
+          const video = document.createElement('video');
+          video.className = `slide-video-${this.id}`;
+          video.src = slideData.media_src;
+          video.controls = true;
+          slide.appendChild(video);
+        }
+
+        if (slideData.media_type === 'audio' && slideData.media_src) {
+          const audioContainer = document.createElement('div');
+          audioContainer.className = `slide-audio-${this.id}`;
+          const audio = document.createElement('audio');
+          audio.src = slideData.media_src;
+          audio.controls = true;
+          audioContainer.appendChild(audio);
+          slide.appendChild(audioContainer);
+        }
+
+        if (slideData.text) {
+          const text = document.createElement('p');
+          text.className = `slide-text-${this.id}`;
+          text.textContent = slideData.text;
+          slide.appendChild(text);
+        }
+
+        if (slideData.button_text) {
+          const button = document.createElement('button');
+          button.className = `slide-button-${this.id}`;
+          button.textContent = slideData.button_text;
+          button.onclick = () => this.next();
+          slide.appendChild(button);
+        }
+
+        this.wrapper.appendChild(slide);
+      });
+    }
+
+    renderDots() {
+      this.dotsContainer.innerHTML = '';
+
+      this.slides.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.className = `dot-${this.id}`;
+        if (index === 0) dot.classList.add('active');
+        dot.onclick = () => this.goToSlide(index);
+        this.dotsContainer.appendChild(dot);
+      });
+    }
+
+    attachEventListeners() {
+      this.prevBtn.onclick = () => this.prev();
+      this.nextBtn.onclick = () => this.next();
+
+      const handleKeydown = (e) => {
+        if (e.key === 'ArrowLeft') this.prev();
+        if (e.key === 'ArrowRight') this.next();
+      };
+
+      document.addEventListener('keydown', handleKeydown);
+    }
+
+    goToSlide(index, direction = 'right') {
+      if (index < 0 || index >= this.slides.length || index === this.currentIndex) return;
+
+      const slides = this.wrapper.children;
+      const currentSlide = slides[this.currentIndex];
+      const nextSlide = slides[index];
+      const dots = this.dotsContainer.children;
+
+      currentSlide.classList.remove('active');
+      dots[this.currentIndex].classList.remove('active');
+
+      currentSlide.classList.add(direction === 'right' ? 'exit-left' : 'exit-right');
+
+      setTimeout(() => {
+        currentSlide.classList.remove('exit-left', 'exit-right');
+        nextSlide.classList.add(direction === 'right' ? 'enter-right' : 'enter-left');
+        nextSlide.classList.add('active');
+
+        /* NEW: always start at the top so heading/text are visible */
+        nextSlide.scrollTop = 0;
+
+        setTimeout(() => {
+          nextSlide.classList.remove('enter-left', 'enter-right');
+        }, 500);
+      }, 100);
+
+      dots[index].classList.add('active');
+      this.currentIndex = index;
+      this.updateNavigation();
+    }
+
+    next() {
+      if (this.currentIndex < this.slides.length - 1) {
+        this.goToSlide(this.currentIndex + 1, 'right');
+      }
+    }
+
+    prev() {
+      if (this.currentIndex > 0) {
+        this.goToSlide(this.currentIndex - 1, 'left');
+      }
+    }
+
+    updateNavigation() {
+      if (this.currentIndex === 0) {
+        this.prevBtn.classList.add('disabled');
+      } else {
+        this.prevBtn.classList.remove('disabled');
+      }
+
+      if (this.currentIndex === this.slides.length - 1) {
+        this.nextBtn.classList.add('disabled');
+      } else {
+        this.nextBtn.classList.remove('disabled');
+      }
+    }
+  }
+
+  new ContentSlider(slidesData, id);
+})();
+</script>
